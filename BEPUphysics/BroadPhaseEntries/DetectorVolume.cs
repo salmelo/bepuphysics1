@@ -10,6 +10,7 @@ using BEPUutilities.ResourceManagement;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
+using System.Threading;
 
 namespace BEPUphysics.BroadPhaseEntries
 {
@@ -359,7 +360,9 @@ namespace BEPUphysics.BroadPhaseEntries
         private Queue<ContainmentChange> containmentChanges = new Queue<ContainmentChange>();
         internal void BeganTouching(DetectorVolumePairHandler pair)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             containmentChanges.Enqueue(new ContainmentChange
             {
                 Change = ContainmentChangeType.BeganTouching,
@@ -370,7 +373,9 @@ namespace BEPUphysics.BroadPhaseEntries
 
         internal void StoppedTouching(DetectorVolumePairHandler pair)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             containmentChanges.Enqueue(new ContainmentChange
             {
                 Change = ContainmentChangeType.StoppedTouching,
@@ -381,7 +386,9 @@ namespace BEPUphysics.BroadPhaseEntries
 
         internal void BeganContaining(DetectorVolumePairHandler pair)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             containmentChanges.Enqueue(new ContainmentChange
             {
                 Change = ContainmentChangeType.BeganContaining,
@@ -392,7 +399,9 @@ namespace BEPUphysics.BroadPhaseEntries
 
         internal void StoppedContaining(DetectorVolumePairHandler pair)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             containmentChanges.Enqueue(new ContainmentChange
             {
                 Change = ContainmentChangeType.StoppedContaining,

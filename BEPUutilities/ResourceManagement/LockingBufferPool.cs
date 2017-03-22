@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace BEPUutilities.ResourceManagement
 {
@@ -20,7 +21,9 @@ namespace BEPUutilities.ResourceManagement
         /// <returns>Pool of the requested size.</returns>
         public override T[] TakeFromPoolIndex(int poolIndex)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             var toReturn = base.TakeFromPoolIndex(poolIndex);
             locker.Exit();
             return toReturn;
@@ -33,7 +36,9 @@ namespace BEPUutilities.ResourceManagement
         /// <param name="poolIndex">Pool index associated with the buffer.</param>
         public override void GiveBack(T[] buffer, int poolIndex)
         {
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             base.GiveBack(buffer, poolIndex);
             locker.Exit();
         }

@@ -336,7 +336,7 @@ namespace BEPUphysics.DeactivationManagement
         }
 
         //Merges must be performed sequentially.
-        private SpinLock addLocker = new SpinLock();
+        private System.Threading.SpinLock addLocker = new System.Threading.SpinLock();
 
         ///<summary>
         /// Adds a simulation island connection to the deactivation manager.
@@ -348,7 +348,9 @@ namespace BEPUphysics.DeactivationManagement
             //DO A MERGE IF NECESSARY
             if (connection.DeactivationManager == null)
             {
-                addLocker.Enter();
+                bool taken = false;
+                addLocker.Enter(ref taken);
+                //addLocker.Enter();
                 connection.DeactivationManager = this;
                 if (connection.entries.Count > 0)
                 {

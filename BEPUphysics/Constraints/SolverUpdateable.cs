@@ -154,7 +154,9 @@ namespace BEPUphysics.Constraints
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
-                    involvedEntities.Elements[i].locker.Enter();
+                    bool taken = false;
+                    involvedEntities.Elements[i].locker.Enter(ref taken);
+                    //involvedEntities.Elements[i].locker.Enter();
                 }
             }
         }
@@ -182,7 +184,10 @@ namespace BEPUphysics.Constraints
             for (int i = 0; i < numberOfInvolvedEntities; i++)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
-                    if (!involvedEntities.Elements[i].locker.TryEnter())
+                {
+                    bool taken = false;
+                    involvedEntities.Elements[i].locker.TryEnter(ref taken);
+                    if (!taken)
                     {
                         //Turns out we can't take all the resources! Immediately drop everything.
                         for (i = i - 1 /*failed on the ith element, so start at the previous*/; i >= 0; i--)
@@ -192,6 +197,7 @@ namespace BEPUphysics.Constraints
                         }
                         return false;
                     }
+                }
             }
             return true;
         }

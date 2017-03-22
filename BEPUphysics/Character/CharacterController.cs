@@ -793,7 +793,11 @@ namespace BEPUphysics.Character
                     Vector3 entityVelocity;
                     bool locked = entityCollidable.Entity.IsDynamic;
                     if (locked)
-                        entityCollidable.Entity.Locker.Enter();
+                    {
+                        bool taken = false;
+                        entityCollidable.Entity.Locker.Enter(ref taken);
+                        //entityCollidable.Entity.Locker.Enter();
+                    }
                     try
                     {
                         entityVelocity = Toolbox.GetVelocityOfPoint(supportData.Position, entityCollidable.Entity.Position, entityCollidable.Entity.LinearVelocity, entityCollidable.Entity.AngularVelocity);
@@ -825,7 +829,9 @@ namespace BEPUphysics.Character
                 {
                     Vector3 change = velocityChange * jumpForceFactor;
                     //Multiple characters cannot attempt to modify another entity's velocity at the same time.
-                    entityCollidable.Entity.Locker.Enter();
+                    bool taken = false;
+                    entityCollidable.Entity.Locker.Enter(ref taken);
+                    //entityCollidable.Entity.Locker.Enter();
                     try
                     {
                         entityCollidable.Entity.LinearMomentum += change * -Body.Mass;

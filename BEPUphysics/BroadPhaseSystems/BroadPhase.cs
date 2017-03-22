@@ -4,6 +4,7 @@ using BEPUphysics.CollisionRuleManagement;
 using BEPUutilities.DataStructures;
 using System;
 using BEPUutilities.Threading;
+using System.Threading;
 
 namespace BEPUphysics.BroadPhaseSystems
 {
@@ -73,7 +74,9 @@ namespace BEPUphysics.BroadPhaseSystems
 
         protected internal void AddOverlap(BroadPhaseOverlap overlap)
         {
-            overlapAddLock.Enter();
+            bool taken = false;
+            overlapAddLock.Enter(ref taken);
+            //overlapAddLock.Enter();
             overlaps.Add(overlap);
             overlapAddLock.Exit();
         }
@@ -88,7 +91,9 @@ namespace BEPUphysics.BroadPhaseSystems
             CollisionRule rule;
             if ((rule = GetCollisionRule(entryA, entryB)) < CollisionRule.NoBroadPhase)
             {
-                overlapAddLock.Enter();
+                bool taken = false;
+                overlapAddLock.Enter(ref taken);
+                //overlapAddLock.Enter();
                 overlaps.Add(new BroadPhaseOverlap(entryA, entryB, rule));
                 overlapAddLock.Exit();
             }

@@ -194,7 +194,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         //Improving the cell set operations directly should improve that problem and the query times noticeably.
 
 
-        SpinLock cellSetLocker = new SpinLock();
+        System.Threading.SpinLock cellSetLocker = new System.Threading.SpinLock();
         void UpdateEntry(int i)
         {
 
@@ -212,7 +212,10 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                     if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
                         continue; //This cell is currently occupied, do not remove.
                     var index = new Int2 {Y = j, Z = k};
-                    cellSetLocker.Enter();
+
+                    bool taken = false;
+                    cellSetLocker.Enter(ref taken);
+                    //cellSetLocker.Enter();
                     cellSet.Remove(ref index, entry);
                     cellSetLocker.Exit();
                 }
@@ -226,7 +229,9 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                     if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z && k <= entry.previousMax.Z)
                         continue; //This cell is already occupied, do not add.
                     var index = new Int2 {Y = j, Z = k};
-                    cellSetLocker.Enter();
+                    bool taken = false;
+                    cellSetLocker.Enter(ref taken);
+                    //cellSetLocker.Enter();
                     cellSet.Add(ref index, entry);
                     cellSetLocker.Exit();
                 }

@@ -81,7 +81,7 @@ namespace BEPUutilities.Threading
                 if (!disposed)
                 {
                     disposed = true;
-                    getToWork.Dispose();
+                    getToWork.Close();
                     getToWork = null;
                     thread = null;
                     GC.SuppressFinalize(this);

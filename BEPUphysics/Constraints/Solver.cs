@@ -84,7 +84,7 @@ namespace BEPUphysics.Constraints
             AllowMultithreading = true;
         }
 
-        private SpinLock addRemoveLocker = new SpinLock();
+        private System.Threading.SpinLock addRemoveLocker = new System.Threading.SpinLock();
 
         ///<summary>
         /// Adds a solver updateable to the solver.
@@ -97,7 +97,9 @@ namespace BEPUphysics.Constraints
             {
                 item.Solver = this;
 
-                addRemoveLocker.Enter();
+                bool taken = false;
+                addRemoveLocker.Enter(ref taken);
+                //addRemoveLocker.Enter();
                 item.solverIndex = solverUpdateables.Count;
                 solverUpdateables.Add(item);
                 addRemoveLocker.Exit();
@@ -122,7 +124,9 @@ namespace BEPUphysics.Constraints
                 item.Solver = null;
 
 
-                addRemoveLocker.Enter();
+                bool taken = false;
+                addRemoveLocker.Enter(ref taken);
+                //addRemoveLocker.Enter();
                 solverUpdateables.Count--;
                 if (item.solverIndex < solverUpdateables.Count)
                 {

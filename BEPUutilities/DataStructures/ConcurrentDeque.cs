@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace BEPUutilities.DataStructures
 {
@@ -47,9 +48,9 @@ namespace BEPUutilities.DataStructures
         /// <returns>True if an element could be dequeued, false otherwise.</returns>
         public void Enqueue(T item)
         {
-            //bool taken = false;
-            //locker.Enter(ref taken);
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
             try
             {
                 //Enqueues go to the tail only; it's like a queue.
@@ -89,9 +90,9 @@ namespace BEPUutilities.DataStructures
         /// <returns>True if an element could be dequeued, false otherwise.</returns>
         public bool TryDequeueFirst(out T item)
         {
-            //bool taken = false;
-            //locker.Enter(ref taken);
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
 
             try
             {
@@ -122,9 +123,9 @@ namespace BEPUutilities.DataStructures
         /// <returns>True if an element could be dequeued, false otherwise.</returns>
         public bool TryDequeueLast(out T item)
         {
-            //bool taken = false;
-            //locker.Enter(ref taken);
-            locker.Enter();
+            bool taken = false;
+            locker.Enter(ref taken);
+            //locker.Enter();
 
             try
             {
