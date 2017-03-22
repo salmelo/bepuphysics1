@@ -512,6 +512,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)$(TargetName).xml" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)BEPUutilities.dll" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)BEPUutilities.pdb" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)BEPUutilities.xml" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)System.Threading.dll" "$(SolutionDir)Assets\Plugins\BEPU"
+copy "$(TargetDir)System.Threading.xml" "$(SolutionDir)Assets\Plugins\BEPU"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
