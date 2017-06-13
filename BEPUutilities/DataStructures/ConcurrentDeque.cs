@@ -9,7 +9,7 @@ namespace BEPUutilities.DataStructures
     /// <typeparam name="T">Type of contained elements.</typeparam>
     public class ConcurrentDeque<T>
     {
-        private readonly SpinLock locker = new SpinLock();
+        private SpinLock locker = new SpinLock();
         internal T[] array;
 
         private int count;
@@ -111,7 +111,10 @@ namespace BEPUutilities.DataStructures
             }
             finally
             {
-                locker.Exit();
+                if (taken)
+                {
+                    locker.Exit(false);
+                }
                 //locker.Exit();
             }
         }

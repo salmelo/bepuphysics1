@@ -13,7 +13,7 @@ namespace BEPUphysics.BroadPhaseSystems
     ///</summary>
     public abstract class BroadPhase : MultithreadedProcessingStage
     {
-        readonly SpinLock overlapAddLock = new SpinLock();
+        SpinLock overlapAddLock = new SpinLock();
 
         ///<summary>
         /// Gets the object which is locked by the broadphase during synchronized update processes.
